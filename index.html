@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MassGIS Geocoder Demo</title>
+	<link type="text/css" rel="stylesheet" href="geocoder_example.css" />
+	
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/8.1.0/ol.min.css" 
+	      integrity="sha512-m1KzXSAktfv5h68DmZQoSyYh/GDrNeblGi7wFHwoQV0Hyg8vHlo5yh+D7HnGtFYYYc4dzltbPC3WqIv303WulQ==" 
+		  crossorigin="anonymous" 
+		  referrerpolicy="no-referrer" />
+		  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+	        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer">
+	</script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js" 
+	        integrity="sha512-lO8f7sIViqr9x5VE6Q72PS6f4FoZcuh5W9YzeSyfNRJ9z/qL3bkweiwG6keGzWS0BQzNDqAWXdBhYzFD6KffIw==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer">
+	</script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/8.1.0/dist/ol.js" 
+	        integrity="sha512-7BxMviUlJVAJOF4l717SzPknm3Y5nLAm3PPtRdrWlCu4GLaW+RhBxYuOJ1MkVNAcPu+lRWn4gtWx0PAxvTzD0g==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer">
+	</script>
+	
+<!--
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/8.1.0/index.js" 
+	        integrity="sha512-+o0vxcUhkW07ZmZ3vD13Wgt0bzTXqmUIbqNSyCWfBiEv8Ziq9BExylSJTQVjEvT6YU2Ob6Bq1MUPDnwn7U6Mng==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer">
+	</script>
+-->
+	
+	<script src="geocoder_example.js"></script>
+  </head>
+  <body>
+    <h2>MassGIS Geocoder Demo</h2>
+	<div id="ui">
+		<span>
+			Address: <input id="address" type="text"/>
+			Town: <input id="city" type="text"/>
+			ZIP Code: <input id="zip" type="text"/>
+			<input id="execute" value="Geocode" type="button">
+			<input id="reset" value="Reset" type="button">
+		</span>
+	</div>
+	<div id="wrapper">
+		<div id="map" class="map">
+		</div> 
+	    <div id="output_div">
+		</div> <!-- output_div -->
+	</div> <!-- wrapper div -->
+	<script> 
+		$(document).ready(function() { initialize(); });
+    </script>
+  </body>
+</html>

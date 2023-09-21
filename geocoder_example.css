@@ -1,0 +1,14 @@
+* {
+	font-family:"Trebuchet MS","sans-serif";
+}
+
+#ui {
+	margin-bottom: 10px;
+}
+
+#map { 
+	height: 550px; 
+	width:  820px;
+	border: 4px solid #B87F32;
+	margin-bottom: 10px;
+}
