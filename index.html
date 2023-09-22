@@ -38,22 +38,24 @@
 	<script src="geocoder_example.js"></script>
   </head>
   <body>
-    <h2>MassGIS Geocoder Demo</h2>
-	<div id="ui">
-		<span>
-			Address: <input id="address" type="text"/>
-			Town: <input id="city" type="text"/>
-			ZIP Code: <input id="zip" type="text"/>
-			<input id="execute" value="Geocode" type="button">
-			<input id="reset" value="Reset" type="button">
-		</span>
-	</div>
-	<div id="wrapper">
-		<div id="map" class="map">
-		</div> 
-	    <div id="output_div">
-		</div> <!-- output_div -->
-	</div> <!-- wrapper div -->
+	<div class="container">
+		<h2>MassGIS Geocoder Demo</h2>
+		<div id="ui">
+			<span>
+				Address: <input id="address" type="text"/>
+				Town: <input id="city" type="text"/>
+				ZIP Code: <input id="zip" type="text"/>
+				<input id="execute" value="Geocode" type="button">
+				<input id="reset" value="Reset" type="button">
+			</span>
+		</div>
+		<div id="wrapper">
+			<div id="map" class="map">
+			</div> 
+			<div id="output_div">
+			</div> <!-- output_div -->
+		</div> <!-- wrapper div -->
+	</div> <!-- container -->
 	<script> 
 		$(document).ready(function() { initialize(); });
     </script>

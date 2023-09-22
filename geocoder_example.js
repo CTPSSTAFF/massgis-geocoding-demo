@@ -2,6 +2,7 @@
 //     Documentation: https://wiki.state.ma.us/display/massgis/ArcGIS+Server+-+Geocoding+-+Census+TIGER+2010
 // Author: Ben Krepp
 
+var debugFlag = true;
 
 // URL for MassGIS Geocoding REST API endpoint
 var massGIS_geocoding_REST_ep = 'https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/CensusTIGER2010/GeocodeServer/findAddressCandidates';
@@ -14,9 +15,23 @@ var epsg26986 = 'PROJCS["NAD83 / Massachusetts Mainland",GEOGCS["NAD83",DATUM["N
 // OpenLayers 'map' object:
 var ol_map = null;
 
-var debugFlag = true;
+// Cached initial map extent
+var init_map_extent = null;
 
-function process_geocoded_location(data) {
+// Vector point layer for geocoded address
+var geocoded_address_style = new ol.style.Style({ image: new ol.style.Circle({ radius: 7.0,
+                                                                               fill: new ol.style.Fill({color: 'red'}),
+																			   stroke: new ol.style.Stroke({color: 'black', width: 1.0})
+																			}) 
+                                               });
+var geocoded_address_layer = new ol.layer.Vector({ title: 'Geocoded Location',
+								                   source	: new ol.source.Vector({ wrapX: false }),
+								                   style: geocoded_address_style
+								                });
+
+
+
+function process_geocoded_address(data) {
 	// Work with first (best) candidate: candidates[0]
 	var x_coord = data.candidates[0].location.x,
 	    y_coord = data.candidates[0].location.y,
@@ -34,11 +49,20 @@ function process_geocoded_location(data) {
 		console.log('Projected coordinates ' + 'x = ' + projected_coords[0] + ' y = ' + projected_coords[1]);
 	}
 	
+	var vSource = geocoded_address_layer.getSource();
+	vSource.clear();
+	
+	var geom = {}, props = {}, feature = {};
+	geom =  new ol.geom.Point(ol.proj.fromLonLat([projected_coords[0], projected_coords[1]]));
+	props = {'score' : score };
+	feature = new ol.Feature({geometry: geom, properties: props});
+	vSource.addFeature(feature);
+	
 	var center = ol.proj.fromLonLat([projected_coords[0], projected_coords[1]]);
 	var zoom = 16; // Arbitrary choice, for now
 	var view = new ol.View({center: center, zoom: zoom});
 	ol_map.setView(view);
-} // process_geocode_response()
+} // process_geocode_address()
 
 function submit_geocode_request(street, city, zip) {
 	var request_url = massGIS_geocoding_REST_ep;
@@ -61,10 +85,11 @@ function submit_geocode_request(street, city, zip) {
 								var score = temp.score;
 								if (score < 75) {
 									alert('Warning: Geocoding service returned score of ' + score + '.\nIgnoring results. Try again.')
+									return;
 								} else if (score < 90) {
-									alert('Warning: Geocoding score was ' + score + '.\nTake results with grain of salt!');
+									$('#output_div').html('Warning: Geocoding score was ' + score + '.\nTake results with grain of salt!');
 								}
-								process_geocoded_location(data);
+								process_geocoded_address(data);
 								return;
 							},
 			error       :   function (qXHR, textStatus, errorThrown ) {
@@ -79,13 +104,18 @@ function submit_geocode_request(street, city, zip) {
 function initialize() {
 	var initial_map_center = [-71.057083, 42.3601];
 	var initial_zoom_level = 12;
-    ol_map = new ol.Map({ layers: [ new ol.layer.Tile({ source: new ol.source.OSM() }) ],
+    ol_map = new ol.Map({ layers: [ new ol.layer.Tile({ source: new ol.source.OSM() }),
+                                    geocoded_address_layer
+								  ],
                            target: 'map',
                            view: new ol.View({ projection: 'EPSG:4326', 
 						                       center: initial_map_center,
                                                zoom:   initial_zoom_level
                                             })
                          });
+	// Cache initial map extent
+	var v = ol_map.getView();
+	init_map_extent = v.calculateExtent();
 	// UI event handlers
 	$('#execute').on('click', 
 		function(e) {
@@ -99,12 +129,11 @@ function initialize() {
 	});
 	$('#reset').on('click',
 		function(e) {
-			// Clear anything that might previously be in the vector layer
-			// TBD
-			// Set map to initial extent and zoom level
-			var v = ol_map.getView();
-			v.setCenter(initial_map_center);
-			v.setZoom(initial_zoom_level);
-			ol_map.setView(v);
+			// Clear anything that might previously been in the output_div and/or vector layer
+			$('#output_div').html('');
+			var vSource = geocoded_address_layer.getSource();
+			vSource.clear();
+			// Reset map to initial extent and zoom level
+			ol_map.getView().fit(init_map_extent, { size: ol_map.getSize() });
 	});
 } // initialize()
