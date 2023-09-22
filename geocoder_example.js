@@ -6,15 +6,15 @@
 // URL for MassGIS Geocoding REST API endpoint
 var massGIS_geocoding_REST_ep = 'https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/CensusTIGER2010/GeocodeServer/findAddressCandidates';
 
-var epsg4326 = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
 
+// WKT definitions of the coordinate systems of the map (EPSG:4326) and of the data returned by the MassGIS geocoder (EPSG:26986)
+var epsg4326 = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
 var epsg26986 = 'PROJCS["NAD83 / Massachusetts Mainland",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4269"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",42.68333333333333],PARAMETER["standard_parallel_2",41.71666666666667],PARAMETER["latitude_of_origin",41],PARAMETER["central_meridian",-71.5],PARAMETER["false_easting",200000],PARAMETER["false_northing",750000],AUTHORITY["EPSG","26986"],AXIS["X",EAST],AXIS["Y",NORTH]]';
 
 // OpenLayers 'map' object:
 var ol_map = null;
 
 var debugFlag = true;
-
 
 function process_geocoded_location(data) {
 	// Work with first (best) candidate: candidates[0]
@@ -43,7 +43,7 @@ function process_geocoded_location(data) {
 function submit_geocode_request(street, city, zip) {
 	var request_url = massGIS_geocoding_REST_ep;
 	request_url += '?';
-	request_url += 'Street=' + street; // Note "+" for whitespace
+	request_url += 'Street=' + street; // Note: whitespace must be replaced with '+'
 	request_url += '&City=' + city;
 	request_url += '&ZIP=' + zip;
 	request_url += '&f=json';
@@ -77,7 +77,6 @@ function submit_geocode_request(street, city, zip) {
 } // submit_geocode_request()
 
 function initialize() {
-	$('#output_wrapper').hide();
 	var initial_map_center = [-71.057083, 42.3601];
 	var initial_zoom_level = 12;
     ol_map = new ol.Map({ layers: [ new ol.layer.Tile({ source: new ol.source.OSM() }) ],
@@ -100,11 +99,8 @@ function initialize() {
 	});
 	$('#reset').on('click',
 		function(e) {
-			// Clear the textual output area
-			$('#output_wrapper').hide();
 			// Clear anything that might previously be in the vector layer
-		    var vSource = oTazLayer.getSource();
-            vSource.clear();
+			// TBD
 			// Set map to initial extent and zoom level
 			var v = ol_map.getView();
 			v.setCenter(initial_map_center);
