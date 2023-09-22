@@ -20,25 +20,25 @@ The MassGIS Geocoding API is a [REST](https://en.wikipedia.org/wiki/REST) \(Repr
 A 'call' to it actually consists of submitting a __request__ to the service, and harvesting a __response__ from it.
 This request\/response interaction is _asynchronous_; rather than simply making a function call, we submit a request
 to the service and arm an _event handler_ to process the response from the service - whenever it arrives.
-In the context of a web application, this is accomplished by an [AJAX] (https://en.wikipedia.org/wiki/Ajax_(programming))'call'.
+In the context of a web application, this is accomplished by an [AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) 'call'.
 
 ### Submitting a Request with the API
 The general structure of the AJAX 'call' we will make, as implemented by the jQuery $.ajax API is:
 ```
-	$.ajax( { url		: request_url,
-			 type		: 'GET',
-			 dataType	: 'json',
-			 success	: 	function (data, textStatus, jqXHR) {	
-								// Code of 'success' event handler for 'Geocode Address' AJAX request
-							},
-			 error       :   function (qXHR, textStatus, errorThrown ) {
-								// Code of 'error' event handler for 'Geocode Address' AJAX request
-								alert('HTTP request to geocode address failed\n' +
-								      'Status: ' + textStatus + '\n' +
-								      'Error:  ' + errorThrown);
-								return;
-							} 
-		});	
+$.ajax( { url		: request_url,
+		 type		: 'GET',
+		 dataType	: 'json',
+		 success	: 	function (data, textStatus, jqXHR) {	
+							// Code of 'success' event handler for 'Geocode Address' AJAX request
+						},
+		 error		:   function (qXHR, textStatus, errorThrown ) {
+							// Code of 'error' event handler for 'Geocode Address' AJAX request
+							alert('HTTP request to geocode address failed\n' +
+								  'Status: ' + textStatus + '\n' +
+								  'Error:  ' + errorThrown);
+							return;
+						} 
+	});	
 ```
 In the code sinppet above, the _request\_url_ is the URL of the MassGIS Address Geocoding service.
 Our call will make an HTTP __GET__ request, and specify that the response data should be in __JSON__ format.
@@ -63,10 +63,10 @@ score: geocoding 'score', between 0 and 100
 In our sample code for the purpose of illustration, we process only the _first_ candidate.
 
 ### Reprojecting the Coordinates in the Response
-The MassGIS Address Geocoder returns x- and y-coordinates in terms of the [EPSG:26986] (https://spatialreference.org/ref/epsg/26986/) spatial reference system \(SRS\).
-The web map in which the response will be displayed uses the [EPSG:4326] (https://spatialreference.org/ref/epsg/4326/) SRS.
+The MassGIS Address Geocoder returns x- and y-coordinates in terms of the [EPSG:26986](https://spatialreference.org/ref/epsg/26986/) spatial reference system \(SRS\).
+The web map in which the response will be displayed uses the [EPSG:4326](https://spatialreference.org/ref/epsg/4326/) SRS.
 In order to be displayed correctly, the coordinates must be projected from EPSG:26986 to EPSG:4326. 
-This is accomplished by the use of the [Proj4.js] (http://proj4js.org/) library.
+This is accomplished by the use of the [Proj4.js](http://proj4js.org/) library.
 
 Our call to proj4 has the signature:
 ```
