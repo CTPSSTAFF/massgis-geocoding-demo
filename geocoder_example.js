@@ -15,8 +15,6 @@ var epsg26986 = 'PROJCS["NAD83 / Massachusetts Mainland",GEOGCS["NAD83",DATUM["N
 // OpenLayers 'map' object:
 var ol_map = null;
 
-// Cached initial map extent
-var init_map_extent = null;
 
 // Vector point layer for geocoded address
 var geocoded_address_style = new ol.style.Style({ image: new ol.style.Circle({ radius: 7.0,
@@ -104,18 +102,16 @@ function submit_geocode_request(street, city, zip) {
 function initialize() {
 	var initial_map_center = [-71.057083, 42.3601];
 	var initial_zoom_level = 12;
+	var initial_map_view = new ol.View({ projection: 'EPSG:4326', 
+						                 center: initial_map_center,
+                                         zoom:   initial_zoom_level
+                                       });
     ol_map = new ol.Map({ layers: [ new ol.layer.Tile({ source: new ol.source.OSM() }),
                                     geocoded_address_layer
 								  ],
                            target: 'map',
-                           view: new ol.View({ projection: 'EPSG:4326', 
-						                       center: initial_map_center,
-                                               zoom:   initial_zoom_level
-                                            })
+                           view: initial_map_view
                          });
-	// Cache initial map extent
-	var v = ol_map.getView();
-	init_map_extent = v.calculateExtent();
 	// UI event handlers
 	$('#execute').on('click', 
 		function(e) {
@@ -134,6 +130,6 @@ function initialize() {
 			var vSource = geocoded_address_layer.getSource();
 			vSource.clear();
 			// Reset map to initial extent and zoom level
-			ol_map.getView().fit(init_map_extent, { size: ol_map.getSize() });
+			ol_map.setView(initial_map_view);
 	});
 } // initialize()
