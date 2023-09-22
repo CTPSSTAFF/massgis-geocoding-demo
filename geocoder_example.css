@@ -2,12 +2,6 @@
 	font-family:"Trebuchet MS","sans-serif";
 }
 
-.container {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-}
-
 #ui {
 	margin-bottom: 10px;
 }

@@ -27,35 +27,25 @@
 			referrerpolicy="no-referrer">
 	</script>
 	
-<!--
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/8.1.0/index.js" 
-	        integrity="sha512-+o0vxcUhkW07ZmZ3vD13Wgt0bzTXqmUIbqNSyCWfBiEv8Ziq9BExylSJTQVjEvT6YU2Ob6Bq1MUPDnwn7U6Mng==" 
-			crossorigin="anonymous" 
-			referrerpolicy="no-referrer">
-	</script>
--->
-	
 	<script src="geocoder_example.js"></script>
   </head>
   <body>
-	<div class="container">
-		<h2>MassGIS Geocoder Demo</h2>
-		<div id="ui">
-			<span>
-				Address: <input id="address" type="text"/>
-				Town: <input id="city" type="text"/>
-				ZIP Code: <input id="zip" type="text"/>
-				<input id="execute" value="Geocode" type="button">
-				<input id="reset" value="Reset" type="button">
-			</span>
-		</div>
-		<div id="wrapper">
-			<div id="map" class="map">
-			</div> 
-			<div id="output_div">
-			</div> <!-- output_div -->
-		</div> <!-- wrapper div -->
-	</div> <!-- container -->
+	<h2>MassGIS Geocoder Demo</h2>
+	<div id="ui">
+		<span>
+			Address: <input id="address" type="text"/>
+			Town: <input id="city" type="text"/>
+			ZIP Code: <input id="zip" type="text"/>
+			<input id="execute" value="Geocode" type="button">
+			<input id="reset" value="Reset" type="button">
+		</span>
+	</div>
+	<div id="wrapper">
+		<div id="map" class="map">
+		</div> 
+		<div id="output_div">
+		</div> <!-- output_div -->
+	</div> <!-- wrapper  -->
 	<script> 
 		$(document).ready(function() { initialize(); });
     </script>
