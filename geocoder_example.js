@@ -1,5 +1,6 @@
 // MassGIS Geocoding  REST API demo app.
 //     Documentation: https://wiki.state.ma.us/display/massgis/ArcGIS+Server+-+Geocoding+-+Census+TIGER+2010
+//     Note: Documentation URL no longer working as of March, 2024.
 // Author: Ben Krepp
 
 var debugFlag = true;
